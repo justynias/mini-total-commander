@@ -12,10 +12,17 @@ namespace TotalCommander
 {
     public partial class MiniTCPanel : UserControl
     {
+
         public MiniTCPanel()
         {
+
             InitializeComponent();
         }
+        public string[] dir;
+        public string[] files;
+
+        
+
         public string CurrentPath
         {
             get
@@ -29,6 +36,7 @@ namespace TotalCommander
             }
         }
 
+        
 
 
         private void comboBoxLoad(object sender, EventArgs e)
@@ -48,8 +56,43 @@ namespace TotalCommander
 
         private void setTextBoxPath(object sender, EventArgs e)
         {
+           
           ComboBox combobox = sender as ComboBox;
             textBox1.Text = combobox.SelectedItem.ToString();
+            listBox1.Items.Clear();
+
+            dir = Directory.GetDirectories(combobox.SelectedItem.ToString());
+            files = Directory.GetFiles(combobox.SelectedItem.ToString());
+            foreach(String d in dir)
+            {
+              
+                listBox1.Items.Add("<D>  "+ d.Remove(0, Path.GetDirectoryName(d).Length));
+            }
+            foreach (String f in files)
+            {
+
+                listBox1.Items.Add("<F>  " + f.Remove(0, Path.GetDirectoryName(f).Length));
+            }
+
+        }
+
+        private void changePath(object sender, EventArgs e)
+        {
+            ListBox list = sender as ListBox;
+
+            
+            textBox1.Text = dir[list.Items.IndexOf(list.SelectedItem)];
+             
+            dir=Directory.GetDirectories(dir[list.Items.IndexOf(list.SelectedItem)]);
+
+            list.Items.Clear();
+            foreach (String d in dir)
+            {
+
+                listBox1.Items.Add("<D>  " + d.Remove(0, Path.GetDirectoryName(d).Length));
+            }
+
+
         }
     }
 }
