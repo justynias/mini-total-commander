@@ -48,7 +48,6 @@ namespace MiniTotalCommander
               
         }
 
-       
 
         private void loadDrives(object sender, EventArgs e)
         {
@@ -74,26 +73,26 @@ namespace MiniTotalCommander
         }
 
 
-
         private void executePath(object sender, EventArgs e)
         {
             ListBox list = sender as ListBox;
             if(list.SelectedItem!=null)
             {
-                if (Directory.Exists(CurrentPath + list.SelectedItem.ToString().Substring(3, list.SelectedItem.ToString().Length - 3)))
+                if (Directory.Exists(CurrentPath + list.SelectedItem.ToString().Remove(0,3)))
                 {
-                    textBoxPath.Text = CurrentPath + list.SelectedItem.ToString().Substring(3, list.SelectedItem.ToString().Length - 3);
-                    LoadPath();
+                    textBoxPath.Text = CurrentPath + list.SelectedItem.ToString().Remove(0, 3);
+;                   LoadPath();
 
                 }
                 else
                 {
-                    Process.Start(CurrentPath + list.SelectedItem.ToString().Substring(3, list.SelectedItem.ToString().Length - 3));
+                    Process.Start(CurrentPath + list.SelectedItem.ToString().Remove(0, 3));
+                   
                 }
             }
             
         }
-        private void LoadPath()   // avoid system catalogs, hidden folders, check if there is an acces!!
+        private void LoadPath()   //  catch (UnauthorizedAccessException) !!!
         {
             listBox.Items.Clear();
             Dir = Directory.GetDirectories(CurrentPath);
