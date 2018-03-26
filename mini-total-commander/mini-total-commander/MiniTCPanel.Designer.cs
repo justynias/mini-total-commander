@@ -1,4 +1,4 @@
-﻿namespace MiniTotalCommander
+﻿namespace mini_total_commander
 {
     partial class MiniTCPanel
     {
@@ -31,67 +31,55 @@
             this.comboBoxDrives = new System.Windows.Forms.ComboBox();
             this.textBoxPath = new System.Windows.Forms.TextBox();
             this.listBox = new System.Windows.Forms.ListBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.returnButton = new System.Windows.Forms.Button();
+            this.buttonReturn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboBoxDrives
             // 
-            this.comboBoxDrives.Location = new System.Drawing.Point(239, 48);
+            this.comboBoxDrives.FormattingEnabled = true;
+            this.comboBoxDrives.Location = new System.Drawing.Point(258, 56);
             this.comboBoxDrives.Name = "comboBoxDrives";
-            this.comboBoxDrives.Size = new System.Drawing.Size(37, 21);
+            this.comboBoxDrives.Size = new System.Drawing.Size(50, 21);
             this.comboBoxDrives.TabIndex = 0;
             this.comboBoxDrives.DropDown += new System.EventHandler(this.loadDrives);
             this.comboBoxDrives.SelectedIndexChanged += new System.EventHandler(this.changeDrive);
             // 
             // textBoxPath
             // 
-            this.textBoxPath.Enabled = false;
-            this.textBoxPath.Location = new System.Drawing.Point(17, 22);
+            this.textBoxPath.Location = new System.Drawing.Point(37, 30);
             this.textBoxPath.Name = "textBoxPath";
-            this.textBoxPath.Size = new System.Drawing.Size(259, 20);
+            this.textBoxPath.Size = new System.Drawing.Size(271, 20);
             this.textBoxPath.TabIndex = 1;
-            this.textBoxPath.Text = "C:\\";
+            this.textBoxPath.Text = "F:\\cszar";
+            this.textBoxPath.TextChanged += new System.EventHandler(this.PathChanged);
             // 
             // listBox
             // 
             this.listBox.FormattingEnabled = true;
-            this.listBox.Location = new System.Drawing.Point(20, 82);
+            this.listBox.Location = new System.Drawing.Point(37, 113);
             this.listBox.Name = "listBox";
-            this.listBox.ScrollAlwaysVisible = true;
-            this.listBox.Size = new System.Drawing.Size(256, 264);
-            this.listBox.TabIndex = 2;
-            this.listBox.DoubleClick += new System.EventHandler(this.executePath);
+            this.listBox.Size = new System.Drawing.Size(271, 277);
+            this.listBox.TabIndex = 5;
             // 
-            // checkedListBox1
+            // buttonReturn
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(330, 304);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(8, 4);
-            this.checkedListBox1.TabIndex = 3;
-            // 
-            // returnButton
-            // 
-            this.returnButton.Location = new System.Drawing.Point(19, 59);
-            this.returnButton.Name = "returnButton";
-            this.returnButton.Size = new System.Drawing.Size(46, 23);
-            this.returnButton.TabIndex = 4;
-            this.returnButton.Text = "...";
-            this.returnButton.UseVisualStyleBackColor = true;
-            this.returnButton.Click += new System.EventHandler(this.returnButtonClick);
+            this.buttonReturn.Location = new System.Drawing.Point(37, 82);
+            this.buttonReturn.Name = "buttonReturn";
+            this.buttonReturn.Size = new System.Drawing.Size(56, 23);
+            this.buttonReturn.TabIndex = 6;
+            this.buttonReturn.Text = "...";
+            this.buttonReturn.UseVisualStyleBackColor = true;
             // 
             // MiniTCPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.returnButton);
-            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.buttonReturn);
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.textBoxPath);
             this.Controls.Add(this.comboBoxDrives);
             this.Name = "MiniTCPanel";
-            this.Size = new System.Drawing.Size(295, 371);
+            this.Size = new System.Drawing.Size(346, 413);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,7 +90,6 @@
         private System.Windows.Forms.ComboBox comboBoxDrives;
         private System.Windows.Forms.TextBox textBoxPath;
         private System.Windows.Forms.ListBox listBox;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.Button returnButton;
+        private System.Windows.Forms.Button buttonReturn;
     }
 }

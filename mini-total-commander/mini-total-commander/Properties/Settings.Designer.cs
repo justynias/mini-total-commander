@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MiniTotalCommander.Properties
+namespace mini_total_commander.Properties
 {
 
 

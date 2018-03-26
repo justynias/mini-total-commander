@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MiniTotalCommander")]
+[assembly: AssemblyTitle("mini-total-commander")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MiniTotalCommander")]
+[assembly: AssemblyProduct("mini-total-commander")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("91c1b060-88a0-4094-88da-ee79f8d39322")]
+[assembly: Guid("e427098c-aa7e-4577-9053-b518d68f6c08")]
 
 // Version information for an assembly consists of the following four values:
 //
