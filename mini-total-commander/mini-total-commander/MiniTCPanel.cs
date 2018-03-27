@@ -44,12 +44,12 @@ namespace mini_total_commander
             set { textBoxPath.Text = value; }
         }
 
-        public event Func<object, EventArgs, string[]> PanelEvent;
-        protected void PathChanged(object sender, EventArgs e)
+        public event Func<object, EventArgs, string[]> PanelEventLoadDir;
+        public void PathChanged(object sender, EventArgs e)
         {
-            if (PanelEvent != null)
+            if (PanelEventLoadDir != null)
             {
-                Dir = PanelEvent(this.CurrentPath, e);
+                Dir = PanelEventLoadDir(this.CurrentPath, e);
                 foreach (String d in Dir)
                 {
 
@@ -59,21 +59,20 @@ namespace mini_total_commander
             }
                
         }
-        public event Func<object, EventArgs, DriveInfo[]> PanelEventDrives;
+        public event Func<object, EventArgs, string[]> PanelEventLoadDrives;
         private void loadDrives(object sender, EventArgs e)
         {
-            if (PanelEventDrives != null)
+            if (PanelEventLoadDrives != null)
             {
-                DriveInfo[] allDrives = PanelEventDrives(sender, e);
+                Drives = PanelEventLoadDrives(sender, e);
                 comboBoxDrives.Items.Clear();
 
-                foreach (DriveInfo d in allDrives)
+                foreach (string d in Drives)
                 {
-
-                        comboBoxDrives.Items.Add(d.Name);
-                   
-
+                        comboBoxDrives.Items.Add(d);
+  
                 }
+                
             }
 
         }
@@ -82,6 +81,16 @@ namespace mini_total_commander
         {
             ComboBox drives = sender as ComboBox;
             textBoxPath.Text = drives.SelectedItem.ToString();
+        }
+
+        private void SelectedItem(object sender, EventArgs e)
+        {
+
+            if (this.CanFocus)
+            {
+                this.Focus();
+            }
+
         }
     }
 }

@@ -17,10 +17,21 @@ namespace mini_total_commander
             return Directory.GetDirectories(path);
         }
 
-        internal DriveInfo[] LoadDrives()
+        internal string[] LoadDrives()
         {
-           
-            return DriveInfo.GetDrives();
+            List<string> readyDrives = new List<string>();
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+            foreach (DriveInfo d in allDrives)
+            {
+
+                if (d.IsReady)
+                {
+                    readyDrives.Add(d.ToString());
+                }
+
+            }
+            // return DriveInfo.GetDrives();
+            return readyDrives.ToArray();
         }
 
     }

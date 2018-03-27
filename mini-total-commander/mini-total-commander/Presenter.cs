@@ -18,14 +18,14 @@ namespace mini_total_commander
         {
             this.model = model;
             this.view = view;
-            view.ViewEvent += View_VEvent;
-            view.ViewEventDrive += View_VeventDrive;
+            view.ViewEventLoadDir += View_ViewEventLoadDir;
+            view.ViewEventLoadDrives += View_ViewEventLoadDrives;
 
         }
 
         //public event Action<object, EventArgs> VEvent;
 
-        private string[] View_VEvent(object arg1, EventArgs arg2)
+        private string[] View_ViewEventLoadDir(object arg1, EventArgs arg2)
         {
            // view.Test = "dupa";
            return model.LoadPath(view.CurrentPath);
@@ -33,7 +33,7 @@ namespace mini_total_commander
             // view.NewUser = model.CreateNewUser(view.FirstName, view.LastName, view.Age);
         }
 
-        private DriveInfo[] View_VeventDrive(object arg1, EventArgs arg2)
+        private string[] View_ViewEventLoadDrives(object arg1, EventArgs arg2)
         {
             return model.LoadDrives();
         }
