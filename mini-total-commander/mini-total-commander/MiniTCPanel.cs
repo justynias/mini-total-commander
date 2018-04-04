@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 
 namespace mini_total_commander
 {
@@ -16,13 +15,14 @@ namespace mini_total_commander
         public MiniTCPanel()
         {
             InitializeComponent();
-            textBoxPath.Text = "F:\\cszar";
+
         }
 
         private string[] files;
         private string[] dir;
         private string[] drives;
 
+        public string Selected { get; set; }
         public string[] Dir
         {
             get { return dir; }
@@ -43,6 +43,12 @@ namespace mini_total_commander
             get { return textBoxPath.Text; }
             set { textBoxPath.Text = value; }
         }
+        public string SelectedDir
+        {
+            get { return listBox.SelectedItem.ToString(); }
+            set {  }
+        }
+
 
         public event Func<object, EventArgs, string[]> PanelEventLoadDir;
         public void PathChanged(object sender, EventArgs e)
@@ -83,14 +89,24 @@ namespace mini_total_commander
             textBoxPath.Text = drives.SelectedItem.ToString();
         }
 
-        private void SelectedItem(object sender, EventArgs e)
-        {
+        public event Action<object, EventArgs> PanelSelectedItem;
 
-            if (this.CanFocus)
+        public void SelectedItem(object sender, EventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if(listBox.SelectedItem != null)
             {
-                this.Focus();
+              
+                PanelSelectedItem(this, e);
             }
+            
 
         }
+        public void ClearSelected()
+        {
+            
+            listBox.ClearSelected();
+        }
+
     }
 }

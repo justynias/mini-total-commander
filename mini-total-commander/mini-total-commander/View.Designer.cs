@@ -43,6 +43,7 @@
             this.miniTCPanel2.Files = null;
             this.miniTCPanel2.Location = new System.Drawing.Point(353, 12);
             this.miniTCPanel2.Name = "miniTCPanel2";
+            this.miniTCPanel2.Selected = null;
             this.miniTCPanel2.Size = new System.Drawing.Size(346, 462);
             this.miniTCPanel2.TabIndex = 1;
             // 
@@ -54,6 +55,7 @@
             this.miniTCPanel1.Files = null;
             this.miniTCPanel1.Location = new System.Drawing.Point(1, 12);
             this.miniTCPanel1.Name = "miniTCPanel1";
+            this.miniTCPanel1.Selected = null;
             this.miniTCPanel1.Size = new System.Drawing.Size(346, 462);
             this.miniTCPanel1.TabIndex = 0;
             // 
@@ -65,7 +67,7 @@
             this.buttonRemove.TabIndex = 2;
             this.buttonRemove.Text = "Remove";
             this.buttonRemove.UseVisualStyleBackColor = true;
-            this.buttonRemove.Click += new System.EventHandler(this.RemoveButton);
+            this.buttonRemove.Click += new System.EventHandler(this.buttonClicked);
             // 
             // buttonMove
             // 
@@ -75,6 +77,7 @@
             this.buttonMove.TabIndex = 3;
             this.buttonMove.Text = "Move";
             this.buttonMove.UseVisualStyleBackColor = true;
+            this.buttonMove.Click += new System.EventHandler(this.buttonClicked);
             // 
             // buttonCopy
             // 
@@ -84,6 +87,7 @@
             this.buttonCopy.TabIndex = 4;
             this.buttonCopy.Text = "Copy";
             this.buttonCopy.UseVisualStyleBackColor = true;
+            this.buttonCopy.Click += new System.EventHandler(this.buttonClicked);
             // 
             // View
             // 
