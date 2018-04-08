@@ -18,21 +18,21 @@ namespace mini_total_commander
 
         }
 
-        private string[] files;
+        //ivate string[] files;
         private string[] dir;
         private string[] drives;
 
-        public string Selected { get; set; }
+       // public string Selected { get; set; }
         public string[] Dir
         {
             get { return dir; }
             set { dir = value; }
         }
-        public string[] Files
-        {
-            get { return files; }
-            set { files = value; }
-        }
+        //public string[] Files
+        //{
+        //    get { return files; }
+        //    set { files = value; }
+        //}
         public string[] Drives
         {
             get { return drives; }
@@ -41,12 +41,29 @@ namespace mini_total_commander
         public string CurrentPath
         {
             get { return textBoxPath.Text; }
-            set { textBoxPath.Text = value; }
+            set {
+                if (value.Contains("<D>"))
+                {
+                    int index = value.IndexOf("<");
+                    textBoxPath.Text = value.Remove(index, 3);
+                } 
+                else textBoxPath.Text = value;
+            }
+                        
         }
+        
         public string SelectedDir
         {
-            get { return listBox.SelectedItem.ToString(); }
-            set {  }
+            get {
+                if (listBox.SelectedItem.ToString().Contains("<D>"))
+                {
+                    int index = listBox.SelectedItem.ToString().IndexOf("<");
+                    return listBox.SelectedItem.ToString().Remove(index, 3);
+                }
+
+                else return listBox.SelectedItem.ToString();
+            }
+            set { }
         }
 
 
@@ -56,14 +73,21 @@ namespace mini_total_commander
             if (PanelEventLoadDir != null)
             {
                 Dir = PanelEventLoadDir(this.CurrentPath, e);
-                foreach (String d in Dir)
+                if(Dir!= null)
                 {
+                    listBox.Items.Clear();
+                    foreach (String d in Dir)
+                    {
 
-                    listBox.Items.Add(d);
+                        listBox.Items.Add(d);
+
+                    }
 
                 }
+                
             }
-               
+
+
         }
         public event Func<object, EventArgs, string[]> PanelEventLoadDrives;
         private void loadDrives(object sender, EventArgs e)
@@ -75,11 +99,12 @@ namespace mini_total_commander
 
                 foreach (string d in Drives)
                 {
-                        comboBoxDrives.Items.Add(d);
-  
+                    comboBoxDrives.Items.Add(d);
+
                 }
-                
+
             }
+
 
         }
 
@@ -88,6 +113,8 @@ namespace mini_total_commander
             ComboBox drives = sender as ComboBox;
             textBoxPath.Text = drives.SelectedItem.ToString();
         }
+
+
 
         public event Action<object, EventArgs> PanelSelectedItem;
 
@@ -108,5 +135,13 @@ namespace mini_total_commander
             listBox.ClearSelected();
         }
 
+        private void ExecutePath(object sender, EventArgs e)
+        {
+            ListBox listBox = sender as ListBox;
+            if(listBox.SelectedItem!=null)
+            {
+                CurrentPath = CurrentPath+listBox.SelectedItem.ToString();
+            }
+        }
     }
 }

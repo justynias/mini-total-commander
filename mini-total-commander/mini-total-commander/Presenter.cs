@@ -46,8 +46,8 @@ namespace mini_total_commander
         private string[] View_ViewEventLoadDir(object arg1, EventArgs arg2)
         {
 
-           return model.LoadPath(view.CurrentPath);
-          
+            return model.LoadPath(view.CurrentPath);
+
         }
 
         private string[] View_ViewEventLoadDrives(object arg1, EventArgs arg2)

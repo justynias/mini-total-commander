@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 namespace mini_total_commander
 {
@@ -14,9 +15,31 @@ namespace mini_total_commander
         { }
         internal string[] LoadPath(string path)
         {
-            //return Directory.GetDirectories(path);
-            return Directory.GetFiles(path);
+            if(Directory.Exists(path))
+            {
+                string[] dir = Directory.GetDirectories(path);
+                string[] files = Directory.GetFiles(path);
+                List<string> allItems = new List<string>();
 
+                foreach (String d in dir)
+                {
+
+                    allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));
+
+                }
+                foreach (String f in files)
+                {
+
+                    allItems.Add(f.Remove(0, Path.GetDirectoryName(f).Length));
+
+                }
+                return allItems.ToArray();
+            }
+            else
+            {
+                Process.Start(path);
+                return null;
+            }
             
         }
 

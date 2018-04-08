@@ -40,10 +40,10 @@
             this.miniTCPanel2.CurrentPath = "";
             this.miniTCPanel2.Dir = null;
             this.miniTCPanel2.Drives = null;
-            this.miniTCPanel2.Files = null;
+           // this.miniTCPanel2.Files = null;
             this.miniTCPanel2.Location = new System.Drawing.Point(353, 12);
             this.miniTCPanel2.Name = "miniTCPanel2";
-            this.miniTCPanel2.Selected = null;
+            //this.miniTCPanel2.Selected = null;
             this.miniTCPanel2.Size = new System.Drawing.Size(346, 462);
             this.miniTCPanel2.TabIndex = 1;
             // 
@@ -52,10 +52,10 @@
             this.miniTCPanel1.CurrentPath = "";
             this.miniTCPanel1.Dir = null;
             this.miniTCPanel1.Drives = null;
-            this.miniTCPanel1.Files = null;
+            //this.miniTCPanel1.Files = null;
             this.miniTCPanel1.Location = new System.Drawing.Point(1, 12);
             this.miniTCPanel1.Name = "miniTCPanel1";
-            this.miniTCPanel1.Selected = null;
+            //this.miniTCPanel1.Selected = null;
             this.miniTCPanel1.Size = new System.Drawing.Size(346, 462);
             this.miniTCPanel1.TabIndex = 0;
             // 
