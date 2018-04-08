@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
+
 
 namespace mini_total_commander
 {
-    public partial class View : Form  //communication between UC and presenter?? 
-                                      //execute path, retrning, exceptions
+    public partial class View : Form  // to do :
+                                      // handle exception, test, working with folders, Iview, user interface + disable view form properties
     {
 
         public View()
@@ -24,15 +24,16 @@ namespace mini_total_commander
             miniTCPanel2.PanelEventLoadDrives += VEventLoadDrives;
             miniTCPanel1.PanelSelectedItem += ChangeSelected;
             miniTCPanel2.PanelSelectedItem += ChangeSelected;
-
+            miniTCPanel1.PanelEventReturnPath += VEventLoadReturnPath;
+            miniTCPanel2.PanelEventReturnPath += VEventLoadReturnPath;
         }
 
 
-        public string CurrentPath { get; set; }
+        public string SourcePath { get; set; }
         public string TargetPath { get; set; }
         public string SelectedItem { get; set; }
 
-
+        
         public event Func<object, EventArgs, string[]> ViewEventLoadDrives;
         public string[] VEventLoadDrives(object arg1, EventArgs arg2)
         {
@@ -43,11 +44,16 @@ namespace mini_total_commander
 
         public event Func<object, EventArgs, string[]> ViewEventLoadDir;
 
-        public string[] VEventLoadDir(object arg1, EventArgs arg2)
+        public string[] VEventLoadDir(object path, EventArgs arg2)
         {
-            CurrentPath = arg1.ToString();
-            return ViewEventLoadDir(arg1, arg2);
+            return ViewEventLoadDir(path, arg2);
 
+        }
+
+        public event Func<object, EventArgs, string> ViewEventLoadReturnPath;
+        public string VEventLoadReturnPath(object path, EventArgs arg2)
+        {
+            return ViewEventLoadReturnPath(path, arg2);
         }
 
         private void ChangeSelected(object sender, EventArgs e)
@@ -57,49 +63,36 @@ namespace mini_total_commander
             if (miniTCPanel.Name == "miniTCPanel1")
             {
                 miniTCPanel2.ClearSelected();
-                CurrentPath=miniTCPanel1.CurrentPath;
+                SourcePath=miniTCPanel1.CurrentPath;
                 TargetPath = miniTCPanel2.CurrentPath;
                 SelectedItem = miniTCPanel1.SelectedDir;
-               
+                //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
+
             }
             else if (miniTCPanel.Name == "miniTCPanel2")
             {
                 miniTCPanel1.ClearSelected();
-                CurrentPath = miniTCPanel2.CurrentPath;
+                SourcePath = miniTCPanel2.CurrentPath;
                 TargetPath = miniTCPanel1.CurrentPath;
                 SelectedItem = miniTCPanel2.SelectedDir;
+                //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
+
             }
         }
         public event Action<string> ViewButtonnClicked;
+        
+        
         public void buttonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
+           
             ViewButtonnClicked(button.Text);
-            //Button button = sender as Button;  //only test, Move it to the model!! + refresh lists
-            //if (!Directory.Exists(SelectedItem)) //only working with file
-            //{
-            //    switch (button.Text)
-            //    {
-            //        case "Copy":
-
-            //            File.Copy(SelectedItem, TargetPath + SelectedItem.Remove(0, Path.GetDirectoryName(SelectedItem).Length));
-            //            break;
-            //        case "Remove":
-            //            File.Delete(SelectedItem);
-            //            break;
-            //        case "Move":
-            //            File.Move(SelectedItem, TargetPath + SelectedItem.Remove(0, Path.GetDirectoryName(SelectedItem).Length));
-            //            break;
-            //        default:
-            //            break;
+            miniTCPanel1.Refresh(sender, e); 
+            miniTCPanel2.Refresh(sender, e);
 
 
-
-            //    }
-            //}
-            
-                
         }
+       
 
 
     }

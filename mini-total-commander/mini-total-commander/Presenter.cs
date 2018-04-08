@@ -22,6 +22,7 @@ namespace mini_total_commander
             view.ViewEventLoadDir += View_ViewEventLoadDir;
             view.ViewEventLoadDrives += View_ViewEventLoadDrives;
             view.ViewButtonnClicked += View_ButtonClicked;
+            view.ViewEventLoadReturnPath += View_ViewEventLoadReturnPath;
 
         }
         private void View_ButtonClicked(string button)
@@ -29,13 +30,15 @@ namespace mini_total_commander
             switch (button)
             {
                 case "Copy":
+                    model.CopyFile(view.SourcePath + view.SelectedItem, view.TargetPath + view.SelectedItem);
                     
+
                     break;
                 case "Remove":
-                    model.RemoveFile(view.SelectedItem, view.CurrentPath);
+                    model.RemoveFile(view.SourcePath + view.SelectedItem);
                     break;
                 case "Move":
-
+                    model.MoveFile(view.SourcePath + view.SelectedItem, view.TargetPath + view.SelectedItem);
                     break;
                 default:
                     break;
@@ -43,10 +46,10 @@ namespace mini_total_commander
             }
 
         }
-        private string[] View_ViewEventLoadDir(object arg1, EventArgs arg2)
+        private string[] View_ViewEventLoadDir(object path, EventArgs arg2)
         {
 
-            return model.LoadPath(view.CurrentPath);
+            return model.LoadPath(path.ToString());
 
         }
 
@@ -55,6 +58,10 @@ namespace mini_total_commander
             return model.LoadDrives();
         }
 
+        private string View_ViewEventLoadReturnPath(object path, EventArgs e)
+        {
+            return model.ReturnPath(path.ToString());
+        }
     }
 }
 

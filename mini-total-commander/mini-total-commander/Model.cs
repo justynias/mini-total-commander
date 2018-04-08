@@ -15,33 +15,44 @@ namespace mini_total_commander
         { }
         internal string[] LoadPath(string path)
         {
-            if(Directory.Exists(path))
-            {
-                string[] dir = Directory.GetDirectories(path);
-                string[] files = Directory.GetFiles(path);
-                List<string> allItems = new List<string>();
+            try {
 
-                foreach (String d in dir)
+                if (Directory.Exists(path)) 
                 {
+                    string[] dir = Directory.GetDirectories(path);
+                    string[] files = Directory.GetFiles(path);
+                    List<string> allItems = new List<string>();
 
-                    allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));
+                    foreach (String d in dir)
+                    {
 
+                        allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));
+
+                    }
+                    foreach (String f in files)
+                    {
+
+                        allItems.Add(f.Remove(0, Path.GetDirectoryName(f).Length));
+
+                    }
+                    return allItems.ToArray();
                 }
-                foreach (String f in files)
+                else
                 {
-
-                    allItems.Add(f.Remove(0, Path.GetDirectoryName(f).Length));
-
+                    try
+                    {
+                        Process.Start(path);
+                    }
+                    catch (System.InvalidOperationException) { }
+                    return null;
                 }
-                return allItems.ToArray();
-            }
-            else
-            {
-                Process.Start(path);
-                return null;
-            }
-            
+
+
+            } catch (System.UnauthorizedAccessException) { return null; } // anauthorized acces 
         }
+            
+            
+        
 
         internal string[] LoadDrives()
         {
@@ -59,19 +70,52 @@ namespace mini_total_commander
             return readyDrives.ToArray();
         }
 
-        internal void CopyFile(string currentDir, string targetDir)   // update lists!!
+        internal void CopyFile(string sourceDir, string targetDir)  
         {
-            File.Copy(currentDir, targetDir);
+
+          
+                try   //copy only files
+                {
+                    File.Copy(sourceDir, targetDir);
+                }
+                catch (IOException) { } //handle it in the messagebox, filename already exist, or sourcefile does not exist
+                catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+
+            }
+        internal void MoveFile(string sourceDir, string targetDir) 
+        {
+            
+
+                try
+                {
+                    File.Move(sourceDir, targetDir);
+                }
+                catch (IOException) { } //handle it in the messagebox, file does not exist?
+            catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+
         }
-        internal void MoveFile(string currentDir, string targetDir)
+        internal void RemoveFile(string fileDir) // check if user is sure to remove file, update list     
         {
-            File.Move(currentDir, targetDir);
-        }
-        internal void RemoveFile(string item, string curremtPath)
-        {
-            File.Delete(item);
+            try
+            {
+                File.Delete(fileDir);
+            }
+            catch (IOException) { } //handle it in the messagebox, files does not exist?
+            catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+
         }
 
+        internal string ReturnPath(string path)
+        {
+            try
+            {
+                if (Path.GetDirectoryName(path) == null) return "";
+                else return Path.GetDirectoryName(path);
+            }
+            catch (System.ArgumentException) { return ""; }
+            catch (System.UnauthorizedAccessException) { return ""; } // anauthorized acces
+
+        }
     }
 
 

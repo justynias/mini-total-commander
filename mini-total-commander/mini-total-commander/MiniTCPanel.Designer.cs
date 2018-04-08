@@ -50,7 +50,7 @@
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.Size = new System.Drawing.Size(271, 20);
             this.textBoxPath.TabIndex = 1;
-            this.textBoxPath.Text = "F:\\cszar";
+            this.textBoxPath.Text = "F:\\";
             this.textBoxPath.TextChanged += new System.EventHandler(this.PathChanged);
             // 
             // listBox
@@ -69,8 +69,9 @@
             this.buttonReturn.Name = "buttonReturn";
             this.buttonReturn.Size = new System.Drawing.Size(56, 23);
             this.buttonReturn.TabIndex = 6;
-            this.buttonReturn.Text = "...";
+            this.buttonReturn.Text = "Return";
             this.buttonReturn.UseVisualStyleBackColor = true;
+            this.buttonReturn.Click += new System.EventHandler(this.ReturnButtonClick);
             // 
             // MiniTCPanel
             // 

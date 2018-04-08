@@ -14,7 +14,9 @@ namespace mini_total_commander
     {
         public MiniTCPanel()
         {
+            
             InitializeComponent();
+            
 
         }
 
@@ -72,10 +74,11 @@ namespace mini_total_commander
         {
             if (PanelEventLoadDir != null)
             {
+                listBox.Items.Clear();
                 Dir = PanelEventLoadDir(this.CurrentPath, e);
                 if(Dir!= null)
                 {
-                    listBox.Items.Clear();
+                    
                     foreach (String d in Dir)
                     {
 
@@ -142,6 +145,17 @@ namespace mini_total_commander
             {
                 CurrentPath = CurrentPath+listBox.SelectedItem.ToString();
             }
+        }
+
+        public event Func<object, EventArgs, string> PanelEventReturnPath;
+        private void ReturnButtonClick(object sender, EventArgs e)
+        {
+            CurrentPath = PanelEventReturnPath(this.CurrentPath, e);
+        }
+
+        public void Refresh(object sender, EventArgs e)
+        {
+            PathChanged(sender, e);
         }
     }
 }
