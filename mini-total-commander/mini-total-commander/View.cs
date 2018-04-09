@@ -14,6 +14,7 @@ namespace mini_total_commander
     public partial class View : Form  // to do :
                                       // handle exception, test, working with folders, Iview, user interface + disable view form properties
                                       // exception when pendrive was removed
+                                      // null after return or doubleckick..
     {
 
         public View()
@@ -57,28 +58,41 @@ namespace mini_total_commander
             return ViewEventLoadReturnPath(path, arg2);
         }
 
-        private void ChangeSelected(object sender, EventArgs e)
+        private void ChangeSelected(object sender, EventArgs e, bool nullPath)
         {
             MiniTCPanel miniTCPanel = sender as MiniTCPanel;
 
-            if (miniTCPanel.Name == "miniTCPanel1")
+            if(nullPath)
             {
-                miniTCPanel2.ClearSelected();
-                SourcePath=miniTCPanel1.CurrentPath;
-                TargetPath = miniTCPanel2.CurrentPath;
-                SelectedItem = miniTCPanel1.SelectedDir;
-                //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
+                SourcePath = "";
+                TargetPath = "";
+                SelectedItem = "";
+                //MessageBox.Show("null");
+            }
+            else
+            {
+                if (miniTCPanel.Name == "miniTCPanel1")
+                {
+                    miniTCPanel2.ClearSelected();
+                    SourcePath = miniTCPanel1.CurrentPath;
+                    TargetPath = miniTCPanel2.CurrentPath;
+                    SelectedItem = miniTCPanel1.SelectedDir;
+                    //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
+
+                }
+                else if (miniTCPanel.Name == "miniTCPanel2")
+                {
+                    miniTCPanel1.ClearSelected();
+                    SourcePath = miniTCPanel2.CurrentPath;
+                    TargetPath = miniTCPanel1.CurrentPath;
+                    SelectedItem = miniTCPanel2.SelectedDir;
+                    //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
+
+                }
 
             }
-            else if (miniTCPanel.Name == "miniTCPanel2")
-            {
-                miniTCPanel1.ClearSelected();
-                SourcePath = miniTCPanel2.CurrentPath;
-                TargetPath = miniTCPanel1.CurrentPath;
-                SelectedItem = miniTCPanel2.SelectedDir;
-                //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
-
-            }
+        
+            
         }
         public event Action<string> ViewButtonnClicked;
         

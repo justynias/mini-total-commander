@@ -62,7 +62,6 @@ namespace mini_total_commander
                     int index = listBox.SelectedItem.ToString().IndexOf("<");
                     return listBox.SelectedItem.ToString().Remove(index, 3);
                 }
-
                 else return listBox.SelectedItem.ToString();
             }
             set { }
@@ -119,17 +118,27 @@ namespace mini_total_commander
 
 
 
-        public event Action<object, EventArgs> PanelSelectedItem;
+        public event Action<object, EventArgs, bool> PanelSelectedItem;
 
         public void SelectedItem(object sender, EventArgs e)
         {
             ListBox listBox = sender as ListBox;
-            if(listBox.SelectedItem != null)
+            if(listBox!=null)
             {
-              
-                PanelSelectedItem(this, e);
+                if (listBox.SelectedItem != null)
+                {
+
+                    PanelSelectedItem(this, e, false);
+                }
+                else
+                {
+                    PanelSelectedItem(this, e, true); //change selected item to ""
+                }
             }
-            
+           
+            else PanelSelectedItem(this, e, true); //change selected item to ""
+
+
 
         }
         public void ClearSelected()
@@ -140,17 +149,20 @@ namespace mini_total_commander
 
         private void ExecutePath(object sender, EventArgs e)
         {
+
             ListBox listBox = sender as ListBox;
             if(listBox.SelectedItem!=null)
             {
                 CurrentPath = CurrentPath+listBox.SelectedItem.ToString();
             }
+            SelectedItem(sender, e); //clear selected!
         }
 
         public event Func<object, EventArgs, string> PanelEventReturnPath;
         private void ReturnButtonClick(object sender, EventArgs e)
         {
             CurrentPath = PanelEventReturnPath(this.CurrentPath, e);
+            SelectedItem(sender, e); //clear selected!
         }
 
         public void Refresh(object sender, EventArgs e)

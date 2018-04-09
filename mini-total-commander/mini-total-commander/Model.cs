@@ -11,7 +11,7 @@ namespace mini_total_commander
     public class Model
     {
 
-        public Model()
+        public Model()   //exception with messages, yes/no to delete, pendrive?
         { }
         internal string[] LoadPath(string path)
         {
@@ -25,14 +25,17 @@ namespace mini_total_commander
 
                     foreach (String d in dir)
                     {
+                        if(Path.GetDirectoryName(d).Length==3) allItems.Add("<D>" + d.Remove(0, 2));
 
-                        allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));
+                        else allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));
+
+                        //Console.WriteLine(Path.GetDirectoryName(d));  //problems with directories under drives, wothout "\"
 
                     }
                     foreach (String f in files)
                     {
-
-                        allItems.Add(f.Remove(0, Path.GetDirectoryName(f).Length));
+                        if (Path.GetDirectoryName(f).Length == 3) allItems.Add(f.Remove(0, 2));
+                        else allItems.Add(f.Remove(0, Path.GetDirectoryName(f).Length));
 
                     }
                     return allItems.ToArray();
@@ -61,20 +64,20 @@ namespace mini_total_commander
             foreach (DriveInfo d in allDrives)
             {
 
-                if (d.IsReady)
-                {
+                //if (d.IsReady)
+                //{
                     readyDrives.Add(d.ToString());
-                }
+                //}
 
             }
             return readyDrives.ToArray();
         }
 
-        internal void CopyFile(string selectedItem, string sourceDir, string targetDir)  
+        internal void CopyDir(string selectedItem, string sourceDir, string targetDir)  
         {
             sourceDir += selectedItem; //full path to the directory
-
-          if(Directory.Exists(sourceDir) & sourceDir!=targetDir) //copy folder , throw exception when target is the source folder!!
+            targetDir += selectedItem;
+            if (Directory.Exists(sourceDir) & sourceDir!=targetDir) //copy folder , throw exception when target is the source folder!!
             {
 
                 DirectoryCopy(sourceDir, targetDir, true);
@@ -84,34 +87,56 @@ namespace mini_total_commander
             {
                 try   //copy only files
                 {
-                    File.Copy(sourceDir, targetDir+selectedItem); //the same name for the destination file 
+                    File.Copy(sourceDir, targetDir); //the same name for the destination file 
+                    Console.WriteLine(sourceDir + " target: " + targetDir);
                 }
                 catch (IOException) { } //handle it in the messagebox, filename already exist, or sourcefile does not exist
                 catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+                catch (System.ArgumentException) { } 
             }
                
 
             }
-        internal void MoveFile(string sourceDir, string targetDir) 
+        internal void MoveDir(string selectedItem, string sourceDir, string targetDir) 
         {
-            
+            sourceDir += selectedItem; //full path to the directory
+            targetDir += selectedItem;
+            if (Directory.Exists(sourceDir) & sourceDir != targetDir) //copy folder , throw exception when target is in the folder!! TO DO
+            {
 
+                Directory.Move(sourceDir, targetDir);
+                Console.WriteLine(sourceDir + " target: " + targetDir);
+            }
+            else
+
+                
                 try
                 {
                     File.Move(sourceDir, targetDir);
                 }
                 catch (IOException) { } //handle it in the messagebox, file does not exist?
             catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+                catch (System.ArgumentException) { }
 
         }
-        internal void RemoveFile(string fileDir) // check if user is sure to remove file, update list     
+        internal void RemoveDir(string dir) // check if user is sure to remove file, update list     
         {
-            try
+            if (Directory.Exists(dir)) //delete folder recursively 
             {
-                File.Delete(fileDir);
+                Directory.Delete(dir, true);
             }
-            catch (IOException) { } //handle it in the messagebox, files does not exist?
-            catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+            else
+            {
+
+                try
+                {
+                    File.Delete(dir);
+                }
+                catch (IOException) { } //handle it in the messagebox, files does not exist?
+                catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+                catch (System.ArgumentException) { }
+
+            }
 
         }
 
