@@ -70,16 +70,26 @@ namespace mini_total_commander
             return readyDrives.ToArray();
         }
 
-        internal void CopyFile(string sourceDir, string targetDir)  
+        internal void CopyFile(string selectedItem, string sourceDir, string targetDir)  
         {
+            sourceDir += selectedItem; //full path to the directory
 
-          
+          if(Directory.Exists(sourceDir) & sourceDir!=targetDir) //copy folder , throw exception when target is the source folder!!
+            {
+
+                DirectoryCopy(sourceDir, targetDir, true);
+                Console.WriteLine(sourceDir + " target: " + targetDir);
+            }
+            else
+            {
                 try   //copy only files
                 {
-                    File.Copy(sourceDir, targetDir);
+                    File.Copy(sourceDir, targetDir+selectedItem); //the same name for the destination file 
                 }
                 catch (IOException) { } //handle it in the messagebox, filename already exist, or sourcefile does not exist
                 catch (System.UnauthorizedAccessException) { } // anauthorized acces 
+            }
+               
 
             }
         internal void MoveFile(string sourceDir, string targetDir) 
@@ -115,6 +125,44 @@ namespace mini_total_commander
             catch (System.ArgumentException) { return ""; }
             catch (System.UnauthorizedAccessException) { return ""; } // anauthorized acces
 
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name); //'System.IO.IOException -> when the filename exist!!
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
         }
     }
 

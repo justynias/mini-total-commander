@@ -13,6 +13,7 @@ namespace mini_total_commander
 {
     public partial class View : Form  // to do :
                                       // handle exception, test, working with folders, Iview, user interface + disable view form properties
+                                      // exception when pendrive was removed
     {
 
         public View()

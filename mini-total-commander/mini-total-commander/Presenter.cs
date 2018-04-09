@@ -30,7 +30,7 @@ namespace mini_total_commander
             switch (button)
             {
                 case "Copy":
-                    model.CopyFile(view.SourcePath + view.SelectedItem, view.TargetPath + view.SelectedItem);
+                    model.CopyFile(view.SelectedItem, view.SourcePath,  view.TargetPath );
                     
 
                     break;
