@@ -17,34 +17,45 @@ namespace mini_total_commander
             
             InitializeComponent();
             
-
         }
 
-        //ivate string[] files;
         private string[] dir;
         private string[] drives;
 
-       // public string Selected { get; set; }
         public string[] Dir
         {
             get { return dir; }
-            set { dir = value; }
+            set
+            { dir = value;
+                if (dir != null)
+                {  
+                    foreach (String d in dir)
+                    {
+                        listBox.Items.Add(d);
+                    }
+                }
+            }
         }
-        //public string[] Files
-        //{
-        //    get { return files; }
-        //    set { files = value; }
-        //}
+
         public string[] Drives
         {
             get { return drives; }
-            set { drives = value; }
+            set { drives = value;
+                comboBoxDrives.Items.Clear();
+                if(drives!=null)
+                {
+                    foreach (string d in drives)
+                    {
+                        comboBoxDrives.Items.Add(d);
+                    }
+                }
+            }
         }
         public string CurrentPath
         {
             get { return textBoxPath.Text; }
             set {
-                if (value.Contains("<D>"))
+                if (value !=null && value.Contains("<D>"))
                 {
                     int index = value.IndexOf("<");
                     textBoxPath.Text = value.Remove(index, 3);
@@ -57,14 +68,21 @@ namespace mini_total_commander
         public string SelectedDir
         {
             get {
-                if (listBox.SelectedItem.ToString().StartsWith("<D>"))
+                if (listBox.SelectedItem != null)
                 {
-                    if (!listBox.SelectedItem.ToString().Contains("\\")) return "\\" + listBox.SelectedItem.ToString().Remove(0, 3);
+                    if (listBox.SelectedItem.ToString().StartsWith("<D>"))    // to remove symbol <D> from the selected item
+                                                                              //to avoid lack of backslash in the path (with root dir)
+                    {
+                        if (!listBox.SelectedItem.ToString().Contains("\\")) return "\\" + listBox.SelectedItem.ToString().Remove(0, 3);
 
-                    else return listBox.SelectedItem.ToString().Remove(0, 3);
+                        else return listBox.SelectedItem.ToString().Remove(0, 3);
+                    }
+                    else if (!listBox.SelectedItem.ToString().Contains("\\")) return "\\" + listBox.SelectedItem.ToString();
+                    else return listBox.SelectedItem.ToString();
                 }
-                else if (!listBox.SelectedItem.ToString().Contains("\\")) return "\\"+ listBox.SelectedItem.ToString();
-                else return listBox.SelectedItem.ToString();
+                else return null;
+
+
             }
             set { }
         }
@@ -77,17 +95,6 @@ namespace mini_total_commander
             {
                 listBox.Items.Clear();
                 Dir = PanelEventLoadDir(this.CurrentPath, e);
-                if(Dir!= null)
-                {
-                    
-                    foreach (String d in Dir)
-                    {
-
-                        listBox.Items.Add(d);
-
-                    }
-
-                }
                 
             }
 
@@ -99,13 +106,6 @@ namespace mini_total_commander
             if (PanelEventLoadDrives != null)
             {
                 Drives = PanelEventLoadDrives(sender, e);
-                comboBoxDrives.Items.Clear();
-
-                foreach (string d in Drives)
-                {
-                    comboBoxDrives.Items.Add(d);
-
-                }
 
             }
 
@@ -136,11 +136,8 @@ namespace mini_total_commander
                 {
                     PanelSelectedItem(this, e, true); //change selected item to ""
                 }
-            }
-           
+            } 
             else PanelSelectedItem(this, e, true); //change selected item to ""
-
-
 
         }
         public void ClearSelected()

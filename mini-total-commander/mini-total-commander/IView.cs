@@ -12,9 +12,11 @@ namespace mini_total_commander
         string TargetPath { get; set; }
         string SelectedItem { get; set; }
 
+        void ErrorMessage(string message);
+
         event Func<object, EventArgs, string[]> ViewEventLoadDrives;
         event Func<object, EventArgs, string[]> ViewEventLoadDir;
         event Func<object, EventArgs, string> ViewEventLoadReturnPath;
-        event Action<string> ViewButtonnClicked;
+        event Func<string, bool> ViewButtonnClicked;
     }
 }

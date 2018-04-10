@@ -11,10 +11,8 @@ using System.Windows.Forms;
 
 namespace mini_total_commander
 {
-    public partial class View : Form, IView  // to do :
-                                      // handle exception, test, working with folders, Iview, user interface + disable view form properties
-                                      // exception when pendrive was removed
-                                      // null after return or doubleckick..
+    public partial class View : Form, IView  
+                                      
     {
 
         public View()
@@ -28,14 +26,16 @@ namespace mini_total_commander
             miniTCPanel2.PanelSelectedItem += ChangeSelected;
             miniTCPanel1.PanelEventReturnPath += VEventLoadReturnPath;
             miniTCPanel2.PanelEventReturnPath += VEventLoadReturnPath;
+            
         }
 
 
         public string SourcePath { get; set; }
         public string TargetPath { get; set; }
         public string SelectedItem { get; set; }
+        public bool Panel1Active { get; set; }
+        public bool Panel2Active { get; set; }
 
-        
         public event Func<object, EventArgs, string[]> ViewEventLoadDrives;
         public string[] VEventLoadDrives(object arg1, EventArgs arg2)
         {
@@ -62,52 +62,113 @@ namespace mini_total_commander
         {
             MiniTCPanel miniTCPanel = sender as MiniTCPanel;
 
-            if(nullPath)
-            {
-                SourcePath = "";
-                TargetPath = "";
-                SelectedItem = "";
-                //MessageBox.Show("null");
-            }
+            if (nullPath) SelectedItem = null;
             else
             {
                 if (miniTCPanel.Name == "miniTCPanel1")
                 {
                     miniTCPanel2.ClearSelected();
-                    SourcePath = miniTCPanel1.CurrentPath;
-                    TargetPath = miniTCPanel2.CurrentPath;
-                    SelectedItem = miniTCPanel1.SelectedDir;
+                    Panel1Active = true;
+                    Panel2Active = false;
                     //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
 
                 }
                 else if (miniTCPanel.Name == "miniTCPanel2")
                 {
                     miniTCPanel1.ClearSelected();
-                    SourcePath = miniTCPanel2.CurrentPath;
-                    TargetPath = miniTCPanel1.CurrentPath;
-                    SelectedItem = miniTCPanel2.SelectedDir;
+                    Panel2Active = true;
+                    Panel1Active = false;
                     //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
 
                 }
-
             }
-        
+  
+                
+
+                //if(nullPath)
+                //{
+                //    SourcePath = "";
+                //    TargetPath = "";
+                //    SelectedItem = "";
+                //    //MessageBox.Show("null");
+                //}
+                //else
+                //{
+                //    if (miniTCPanel.Name == "miniTCPanel1")
+                //    {
+                //        miniTCPanel2.ClearSelected();
+                //        SourcePath = miniTCPanel1.CurrentPath;
+                //        TargetPath = miniTCPanel2.CurrentPath;
+                //        SelectedItem = miniTCPanel1.SelectedDir;
+                //        //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
+
+                //    }
+                //    else if (miniTCPanel.Name == "miniTCPanel2")
+                //    {
+                //        miniTCPanel1.ClearSelected();
+                //        SourcePath = miniTCPanel2.CurrentPath;
+                //        TargetPath = miniTCPanel1.CurrentPath;
+                //        SelectedItem = miniTCPanel2.SelectedDir;
+                //        //MessageBox.Show(SelectedItem + " source: " + SourcePath + " target: " + TargetPath);
+
+                //    }
+
             
-        }
-        public event Action<string> ViewButtonnClicked;
+
+
+    }
+        public event Func<string, bool> ViewButtonnClicked;
         
         
         public void buttonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
-           
-            ViewButtonnClicked(button.Text);
-            miniTCPanel1.Refresh(sender, e); 
-            miniTCPanel2.Refresh(sender, e);
 
+          if(Panel1Active)
+            {
+                SourcePath = miniTCPanel1.CurrentPath;
+                TargetPath = miniTCPanel2.CurrentPath;
+                SelectedItem = miniTCPanel1.SelectedDir;
+            }
+          else if (Panel2Active)
+            {
+                SourcePath = miniTCPanel2.CurrentPath;
+                TargetPath = miniTCPanel1.CurrentPath;
+                SelectedItem = miniTCPanel2.SelectedDir;
+            }
 
+            if(SelectedItem!=null)
+            {
+                if (button.Text == "Remove")
+                {
+                    if (ViewButtonnClicked(button.Text))  // need better solution, more objective with these panels 
+                    {
+                        if (Panel1Active)
+                        {
+                            miniTCPanel1.Refresh(sender, e);
+                        }
+                        else if (Panel2Active)
+                        {
+                            miniTCPanel2.Refresh(sender, e);
+                        }
+                    }
+                }
+                else if (TargetPath != "")
+                {
+                    if(ViewButtonnClicked(button.Text))
+                    {
+                        miniTCPanel1.Refresh(sender, e);
+                        miniTCPanel2.Refresh(sender, e);
+                    }
+                }
+            }
         }
        
+        public void ErrorMessage (string message)
+        {
+            MessageBox.Show(message);
+        }
+        
 
 
     }

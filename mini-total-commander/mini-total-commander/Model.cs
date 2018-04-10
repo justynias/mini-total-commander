@@ -11,21 +11,22 @@ namespace mini_total_commander
     public class Model
     {
 
-        public Model()   //exception with messages, yes/no to delete, pendrive?
+        public Model()   // yes/no to delete, exception when drive was removed
         { }
         internal string[] LoadPath(string path)
         {
-            try {
-
-                if (Directory.Exists(path)) 
+            //DriveInfo drive = new DriveInfo(Directory.GetDirectoryRoot(path));
+            //if(drive.IsReady)
+            //{
+                if (Directory.Exists(path)) //check if drive exists!! after removing pendrive, better solution than throwing an exception?
                 {
                     string[] dir = Directory.GetDirectories(path);
                     string[] files = Directory.GetFiles(path);
                     List<string> allItems = new List<string>();
 
                     foreach (String d in dir)
-                    {                    
-                        allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));          
+                    {
+                        allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));
                     }
                     foreach (String f in files)
                     {
@@ -33,22 +34,17 @@ namespace mini_total_commander
                     }
                     return allItems.ToArray();
                 }
+
                 else
-                {
-                    try
-                    {
-                        Process.Start(path);
-                    }
-                    catch (System.InvalidOperationException) { }
-                    return null;
-                }
+            {
+                Process.Start(path);
+                return null;
+            }
 
-
-            } catch (System.UnauthorizedAccessException) { return null; } // anauthorized acces 
+  
         }
             
-            
-        
+  
 
         internal string[] LoadDrives()
         {
@@ -66,37 +62,31 @@ namespace mini_total_commander
             return readyDrives.ToArray();
         }
 
-        internal void CopyDir(string selectedItem, string sourceDir, string targetDir)  
+        internal bool CopyDir( string sourceDir, string targetDir)  
         {
-            sourceDir += selectedItem; //full path to the directory
-            targetDir += selectedItem;
-            if (Directory.Exists(sourceDir)) //copy folder , throw exception when target is the source folder!!
+            if (Directory.Exists(sourceDir)) //copy folder 
             {
-
-                DirectoryCopy(sourceDir, targetDir, true);
                 Console.WriteLine(sourceDir + " target: " + targetDir);
+                DirectoryCopy(sourceDir, targetDir, true);
             }
             else
             {
-                try   //copy only files
-                {
-                    File.Copy(sourceDir, targetDir); //the same name for the destination file 
+                //copy only files
                     Console.WriteLine(sourceDir + " target: " + targetDir);
-                }
-                catch (IOException) { } //handle it in the messagebox, filename already exist, or sourcefile does not exist
-                catch (System.UnauthorizedAccessException) { } // anauthorized acces 
-                catch (System.ArgumentException) { } 
+                    File.Copy(sourceDir, targetDir); //the same name for the destination file 
             }
-               
+            return true;          
 
-            }
-        internal void MoveDir(string selectedItem, string sourceDir, string targetDir) 
+       }
+
+        internal bool MoveDir(string sourceDir, string targetDir) 
         {
-            sourceDir += selectedItem; //full path to the directory
-            targetDir += selectedItem;
-            if (Directory.Exists(sourceDir)) //copy folder , throw exception when target is in the folder!! TO DO
+
+            if (Directory.Exists(sourceDir)) //copy folder 
             {
-                if (Directory.GetDirectoryRoot(sou­rceDir) == Directory.GetDirectoryRoot(targetDir))
+                Console.WriteLine(sourceDir + " target: " + targetDir);
+
+                if (Directory.GetDirectoryRoot(sou­rceDir) == Directory.GetDirectoryRoot(targetDir)) // if its the same volumin, biuld in method
                 {
                     Directory.Move(sourceDir, targetDir);
                 }
@@ -106,21 +96,12 @@ namespace mini_total_commander
                     Directory.Delete(sourceDir,true);
                 }
                
-                Console.WriteLine(sourceDir + " target: " + targetDir);
             }
-            else
-
-                
-                try
-                {
-                    File.Move(sourceDir, targetDir);
-                }
-                catch (IOException) { } //handle it in the messagebox, file does not exist?
-            catch (System.UnauthorizedAccessException) { } // anauthorized acces 
-                catch (System.ArgumentException) { }
+            else File.Move(sourceDir, targetDir);
+            return true;
 
         }
-        internal void RemoveDir(string dir) // check if user is sure to remove file, update list     
+        internal  bool RemoveDir(string dir) // check if user is sure to remove file, update list     
         {
             if (Directory.Exists(dir)) //delete folder recursively 
             {
@@ -128,28 +109,17 @@ namespace mini_total_commander
             }
             else
             {
-
-                try
-                {
                     File.Delete(dir);
-                }
-                catch (IOException) { } //handle it in the messagebox, files does not exist?
-                catch (System.UnauthorizedAccessException) { } // anauthorized acces 
-                catch (System.ArgumentException) { }
 
             }
+            return true;
 
         }
 
         internal string ReturnPath(string path)
         {
-            try
-            {
                 if (Path.GetDirectoryName(path) == null) return "";
                 else return Path.GetDirectoryName(path);
-            }
-            catch (System.ArgumentException) { return ""; }
-            catch (System.UnauthorizedAccessException) { return ""; } // anauthorized acces
 
         }
 
@@ -158,12 +128,12 @@ namespace mini_total_commander
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
 
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
-            }
+            //if (!dir.Exists)
+            //{
+            //    throw new DirectoryNotFoundException(
+            //        "Source directory does not exist or could not be found: "
+            //        + sourceDirName);
+            //}
 
             DirectoryInfo[] dirs = dir.GetDirectories();
             // If the destination directory doesn't exist, create it.

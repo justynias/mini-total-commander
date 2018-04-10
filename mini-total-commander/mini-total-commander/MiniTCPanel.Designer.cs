@@ -36,7 +36,6 @@
             // 
             // comboBoxDrives
             // 
-            this.comboBoxDrives.FormattingEnabled = true;
             this.comboBoxDrives.Location = new System.Drawing.Point(258, 56);
             this.comboBoxDrives.Name = "comboBoxDrives";
             this.comboBoxDrives.Size = new System.Drawing.Size(50, 21);
@@ -46,6 +45,7 @@
             // 
             // textBoxPath
             // 
+            this.textBoxPath.Enabled = false;
             this.textBoxPath.Location = new System.Drawing.Point(37, 30);
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.Size = new System.Drawing.Size(271, 20);

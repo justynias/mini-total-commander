@@ -28,36 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.miniTCPanel2 = new mini_total_commander.MiniTCPanel();
-            this.miniTCPanel1 = new mini_total_commander.MiniTCPanel();
             this.buttonRemove = new System.Windows.Forms.Button();
             this.buttonMove = new System.Windows.Forms.Button();
             this.buttonCopy = new System.Windows.Forms.Button();
+            this.miniTCPanel2 = new mini_total_commander.MiniTCPanel();
+            this.miniTCPanel1 = new mini_total_commander.MiniTCPanel();
             this.SuspendLayout();
-            // 
-            // miniTCPanel2
-            // 
-            this.miniTCPanel2.CurrentPath = "";
-            this.miniTCPanel2.Dir = null;
-            this.miniTCPanel2.Drives = null;
-           // this.miniTCPanel2.Files = null;
-            this.miniTCPanel2.Location = new System.Drawing.Point(353, 12);
-            this.miniTCPanel2.Name = "miniTCPanel2";
-            //this.miniTCPanel2.Selected = null;
-            this.miniTCPanel2.Size = new System.Drawing.Size(346, 462);
-            this.miniTCPanel2.TabIndex = 1;
-            // 
-            // miniTCPanel1
-            // 
-            this.miniTCPanel1.CurrentPath = "";
-            this.miniTCPanel1.Dir = null;
-            this.miniTCPanel1.Drives = null;
-            //this.miniTCPanel1.Files = null;
-            this.miniTCPanel1.Location = new System.Drawing.Point(1, 12);
-            this.miniTCPanel1.Name = "miniTCPanel1";
-            //this.miniTCPanel1.Selected = null;
-            this.miniTCPanel1.Size = new System.Drawing.Size(346, 462);
-            this.miniTCPanel1.TabIndex = 0;
             // 
             // buttonRemove
             // 
@@ -89,6 +65,26 @@
             this.buttonCopy.UseVisualStyleBackColor = true;
             this.buttonCopy.Click += new System.EventHandler(this.buttonClicked);
             // 
+            // miniTCPanel2
+            // 
+            this.miniTCPanel2.CurrentPath = "";
+            this.miniTCPanel2.Dir = null;
+            this.miniTCPanel2.Drives = null;
+            this.miniTCPanel2.Location = new System.Drawing.Point(353, 12);
+            this.miniTCPanel2.Name = "miniTCPanel2";
+            this.miniTCPanel2.Size = new System.Drawing.Size(346, 462);
+            this.miniTCPanel2.TabIndex = 1;
+            // 
+            // miniTCPanel1
+            // 
+            this.miniTCPanel1.CurrentPath = "";
+            this.miniTCPanel1.Dir = null;
+            this.miniTCPanel1.Drives = null;
+            this.miniTCPanel1.Location = new System.Drawing.Point(1, 12);
+            this.miniTCPanel1.Name = "miniTCPanel1";
+            this.miniTCPanel1.Size = new System.Drawing.Size(346, 462);
+            this.miniTCPanel1.TabIndex = 0;
+            // 
             // View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +95,8 @@
             this.Controls.Add(this.buttonRemove);
             this.Controls.Add(this.miniTCPanel2);
             this.Controls.Add(this.miniTCPanel1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "View";
             this.Text = "Form1";
             this.ResumeLayout(false);

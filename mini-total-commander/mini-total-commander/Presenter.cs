@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace mini_total_commander
 {
     public class Presenter
     {
 
-
-        //IPanel panel;
         Model model;
-        View view;
+        IView view;
         
         public Presenter(Model model, View view)
         {
@@ -25,32 +24,39 @@ namespace mini_total_commander
             view.ViewEventLoadReturnPath += View_ViewEventLoadReturnPath;
 
         }
-        private void View_ButtonClicked(string button)
+        private bool View_ButtonClicked(string button)
         {
-            switch (button)
+            try
+            {
+                switch (button)
             {
                 case "Copy":
-                    model.CopyDir(view.SelectedItem, view.SourcePath,  view.TargetPath );
-                    
-
-                    break;
+                    return model.CopyDir(view.SourcePath + view.SelectedItem, view.TargetPath + view.SelectedItem);
                 case "Remove":
-                    model.RemoveDir(view.SourcePath + view.SelectedItem);
-                    break;
+                    return model.RemoveDir(view.SourcePath + view.SelectedItem);
                 case "Move":
-                    model.MoveDir(view.SelectedItem, view.SourcePath, view.TargetPath);
-                    break;
+                    return model.MoveDir(view.SourcePath + view.SelectedItem, view.TargetPath + view.SelectedItem);
                 default:
-                    break;
+                    return false;
 
             }
-
+            }
+            catch (IOException ioexc) { view.ErrorMessage(ioexc.Message); }
+            catch (System.UnauthorizedAccessException accesexc) { view.ErrorMessage(accesexc.Message); } 
+            catch (System.ArgumentException argexc) { view.ErrorMessage(argexc.Message); }
+            return false;
+            
         }
         private string[] View_ViewEventLoadDir(object path, EventArgs arg2)
         {
-
-            return model.LoadPath(path.ToString());
-
+            try
+            {
+                return model.LoadPath(path.ToString());
+            }
+            catch (System.ComponentModel.Win32Exception winexc) { view.ErrorMessage(winexc.Message); }
+            catch (System.InvalidOperationException invalidexc) { view.ErrorMessage(invalidexc.Message); }
+            catch (System.UnauthorizedAccessException accesexc) { view.ErrorMessage(accesexc.Message); } 
+            return null;
         }
 
         private string[] View_ViewEventLoadDrives(object arg1, EventArgs arg2)
@@ -60,7 +66,13 @@ namespace mini_total_commander
 
         private string View_ViewEventLoadReturnPath(object path, EventArgs e)
         {
-            return model.ReturnPath(path.ToString());
+            try
+            {
+                return model.ReturnPath(path.ToString());
+            }
+            catch (System.ArgumentException argexc) { view.ErrorMessage(argexc.Message); }
+            catch (System.UnauthorizedAccessException accesexc) { view.ErrorMessage(accesexc.Message); }
+            return null;
         }
     }
 }
