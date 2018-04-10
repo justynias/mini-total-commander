@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPanel.cs" />
+    <Compile Include="IView.cs" />
     <Compile Include="MiniTCPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

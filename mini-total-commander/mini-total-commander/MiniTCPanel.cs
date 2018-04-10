@@ -57,11 +57,13 @@ namespace mini_total_commander
         public string SelectedDir
         {
             get {
-                if (listBox.SelectedItem.ToString().Contains("<D>"))
+                if (listBox.SelectedItem.ToString().StartsWith("<D>"))
                 {
-                    int index = listBox.SelectedItem.ToString().IndexOf("<");
-                    return listBox.SelectedItem.ToString().Remove(index, 3);
+                    if (!listBox.SelectedItem.ToString().Contains("\\")) return "\\" + listBox.SelectedItem.ToString().Remove(0, 3);
+
+                    else return listBox.SelectedItem.ToString().Remove(0, 3);
                 }
+                else if (!listBox.SelectedItem.ToString().Contains("\\")) return "\\"+ listBox.SelectedItem.ToString();
                 else return listBox.SelectedItem.ToString();
             }
             set { }

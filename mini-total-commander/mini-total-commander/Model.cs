@@ -24,19 +24,12 @@ namespace mini_total_commander
                     List<string> allItems = new List<string>();
 
                     foreach (String d in dir)
-                    {
-                        if(Path.GetDirectoryName(d).Length==3) allItems.Add("<D>" + d.Remove(0, 2));
-
-                        else allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));
-
-                        //Console.WriteLine(Path.GetDirectoryName(d));  //problems with directories under drives, wothout "\"
-
+                    {                    
+                        allItems.Add("<D>" + d.Remove(0, Path.GetDirectoryName(d).Length));          
                     }
                     foreach (String f in files)
                     {
-                        if (Path.GetDirectoryName(f).Length == 3) allItems.Add(f.Remove(0, 2));
-                        else allItems.Add(f.Remove(0, Path.GetDirectoryName(f).Length));
-
+                        allItems.Add(f.Remove(0, Path.GetDirectoryName(f).Length));
                     }
                     return allItems.ToArray();
                 }
@@ -64,10 +57,10 @@ namespace mini_total_commander
             foreach (DriveInfo d in allDrives)
             {
 
-                //if (d.IsReady)
-                //{
+               if (d.IsReady)
+                {
                     readyDrives.Add(d.ToString());
-                //}
+                }
 
             }
             return readyDrives.ToArray();
@@ -77,7 +70,7 @@ namespace mini_total_commander
         {
             sourceDir += selectedItem; //full path to the directory
             targetDir += selectedItem;
-            if (Directory.Exists(sourceDir) & sourceDir!=targetDir) //copy folder , throw exception when target is the source folder!!
+            if (Directory.Exists(sourceDir)) //copy folder , throw exception when target is the source folder!!
             {
 
                 DirectoryCopy(sourceDir, targetDir, true);
@@ -101,10 +94,18 @@ namespace mini_total_commander
         {
             sourceDir += selectedItem; //full path to the directory
             targetDir += selectedItem;
-            if (Directory.Exists(sourceDir) & sourceDir != targetDir) //copy folder , throw exception when target is in the folder!! TO DO
+            if (Directory.Exists(sourceDir)) //copy folder , throw exception when target is in the folder!! TO DO
             {
-
-                Directory.Move(sourceDir, targetDir);
+                if (Directory.GetDirectoryRoot(sou­rceDir) == Directory.GetDirectoryRoot(targetDir))
+                {
+                    Directory.Move(sourceDir, targetDir);
+                }
+                else
+                {
+                    DirectoryCopy(sourceDir, targetDir, true);
+                    Directory.Delete(sourceDir,true);
+                }
+               
                 Console.WriteLine(sourceDir + " target: " + targetDir);
             }
             else

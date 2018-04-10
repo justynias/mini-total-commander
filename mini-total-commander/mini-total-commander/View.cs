@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace mini_total_commander
 {
-    public partial class View : Form  // to do :
+    public partial class View : Form, IView  // to do :
                                       // handle exception, test, working with folders, Iview, user interface + disable view form properties
                                       // exception when pendrive was removed
                                       // null after return or doubleckick..
